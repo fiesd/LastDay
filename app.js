@@ -409,7 +409,7 @@ async function summarize() {
     model: 'gpt-4o-mini',
     temperature: 0.7,
     messages: [
-      { role: 'system', content: '너는 감정 일기를 도와주는 따뜻한 한국어 상담가야.' },
+      { role: 'system', content: '너는 감정 일기를 요약해주고 조언해주는 다정한 한국어 상담가입니다.' },
       {
         role: 'user',
         content: `
