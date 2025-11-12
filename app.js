@@ -387,6 +387,56 @@ function renderWeeklyStats(all,box){
 
   box.appendChild(wrap);
 }
+
+// ================== 전역 이벤트 ==================
+document.body.addEventListener('click', async e=>{
+  const t=e.target;
+
+  if(t.id==='nextToDiary'){ saveCurrent(); showTab('Diary'); }
+
+  if(t.id==='saveBtn'){ 
+    saveCurrent(); 
+    alert('저장했어요!'); 
+    showTab('Calendar'); 
+  }
+
+  if(t.id==='delBtn'){ 
+    if(confirm('삭제할까요?')) deleteCurrent(); 
+  }
+
+  if(t.id==='summBtn'){
+    const box=$('#summaryBox');
+    const text=$('#summaryText');
+    const time=$('#summaryTime');
+
+    box.style.display='';
+    text.textContent='요약 중...';
+    time.textContent='';
+    t.disabled=true;
+
+    try{
+      const sum=await summarize();
+      text.textContent=sum;
+      time.textContent=`(${new Date().toLocaleString()})`;
+
+      const id=fmt(selectedDate);
+      const all=loadAll();
+      all[id]={
+        text:$('#diary').value,
+        praise:$('#praise').value,
+        reflection:$('#reflection').value,
+        mood:getSelectedMood(),
+        summary:{text:sum,at:Date.now()}
+      };
+      saveAll(all);
+    }catch(e){
+      text.textContent='요약 실패: '+e.message; // 에러를 화면에 남김
+    }finally{
+      t.disabled=false;
+    }
+  }
+});
+
 // 설정
 const menuBtn=$('#menuBtn'), sidebar=$('#sidebar'), overlay=$('#overlay');
 
