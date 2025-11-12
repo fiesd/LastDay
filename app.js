@@ -586,15 +586,15 @@ $('#exportBtn')?.addEventListener('click', () => {
     
     // 데이터를 JSON 문자열로 변환
     const jsonString = JSON.stringify(data, null, 2);
-    // JSON 파일을 만듭니다
+    // JSON 파일 생성
     const blob = new Blob([jsonString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     
-    // 'backup-dailymyday.json' 이름으로 다운로드 링크를 만듭니다
+    // 'backup-dailymyday.json' 이름으로 다운로드 링크 생성
     const a = document.createElement('a');
     a.href = url;
     a.download = `backup-dailymyday-${fmt(new Date())}.json`;
-    a.click(); // 가상으로 클릭하여 다운로드 실행
+    a.click(); 
     
     URL.revokeObjectURL(url); // 메모리 정리
     alert('백업 파일을 저장했습니다');
@@ -606,17 +606,15 @@ $('#exportBtn')?.addEventListener('click', () => {
 
 // 2. 데이터 가져오기 (복구)
 $('#importBtn')?.addEventListener('click', () => {
-  // 1. 파일 선택창을 엽니다
+  
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'application/json';
-  
-  // 2. 파일이 선택되면 실행됩니다
   input.onchange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // 3. JSON 파일을 읽습니다
+    // 3. JSON 파일 읽기
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
@@ -627,8 +625,7 @@ $('#importBtn')?.addEventListener('click', () => {
           throw new Error('올바른 백업 파일 형식이 아닙니다.');
         }
 
-        // 4. 정말 덮어쓸지 물어봅니다
-        if (confirm('데이터를 복구할까요?\n[경고] 현재 저장된 모든 일기가 백업 파일의 내용으로 덮어씌워집니다')) {
+        if (confirm('데이터를 복구할까요?\n현재 저장된 모든 일기가 백업 파일의 내용으로 덮어씌워집니다')) {
           saveAll(data); // 새 데이터로 로컬 스토리지 전체를 덮어씁니다
           alert('복구 완료. 앱을 새로고침합니다.');
           location.reload(); // 앱을 새로고침해서 달력 등에 즉시 반영

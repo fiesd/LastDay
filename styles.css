@@ -390,12 +390,30 @@ html.dark #statsMode .btn.small:hover {
   color: var(--primary);
 }
 
+/*도움말 탭*/
+#viewHelp .card {
+  max-width: 600px;  
+  margin-left: auto;   
+  margin-right: auto; 
+}
+
+/* [!] 도움말 탭 안의 텍스트 스타일 */
+.help-content ul { 
+  margin: 0; 
+  padding-left: 1.2em; /* 들여쓰기 */
+}
+.help-content li { 
+  margin: .4em 0; 
+  font-size: var(--fs-base);
+  line-height: 1.7; /* 줄 간격 */
+}
+
 
 /* ===== 데스크탑용 미디어 쿼리 ===== */
 /* 화면 너비가 768px 이상일 때 (태블릿/데스크탑) */
 @media (min-width: 768px) {
 
-  /* [요청 2] 감정 탭: 6열로 복귀 */
+  /* 감정 탭: 6열로 복귀 */
   .moods {
     grid-template-columns: repeat(6, 1fr);
   }
