@@ -388,38 +388,64 @@ function renderWeeklyStats(all,box){
   box.appendChild(wrap);
 }
 
-// ================== [!] 수정/추가된 부분 ==================
+// ================== [!] 수정된 부분 ==================
 // AI 요약 함수 (summarize)
 // =========================================================
 async function summarize() {
- const proxy = document.querySelector('meta[name="proxy-url"]')?.content || '';
-if (!proxy) throw new Error('프록시 URL이 설정되지 않았습니다.');
+  // 1. index.html에 설정한 프록시 주소를 가져옵니다.
+  const proxy = document.querySelector('meta[name="proxy-url"]')?.content || '';
+  if (!proxy) throw new Error('프록시 URL이 설정되지 않았습니다. (index.html 확인)');
 
-const body = {
-  model: 'gpt-4o-mini',
-  temperature: 0.7,
-  messages: [
-    { role: 'system', content: '너는 감정 일기를 도와주는 따뜻한 한국어 상담가야.' },
-    { role: 'user', content: $('#diary').value.trim() }
-  ]
-};
+  const diary = $('#diary').value.trim();
+  const praise = $('#praise').value.trim();
+  const reflection = $('#reflection').value.trim();
+  const moodId = getSelectedMood();
+  const moodName = MOOD_NAME[moodId] || '';
 
-const res = await fetch(`${proxy}/v1/chat/completions`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    // 워커에서 x-proxy-key 검증을 쓰지 않으면 이 줄은 빼!
-    // 'x-proxy-key': 'happy-day-777'
-  },
-  body: JSON.stringify(body)
-});
+  if (!diary) throw new Error('일기 내용을 먼저 입력해 주세요.');
 
-if (!res.ok) throw new Error(`요약 실패: [프록시] HTTP ${res.status} - ${await res.text()}`);
-const data = await res.json();
-const summary = data.choices?.[0]?.message?.content?.trim() ?? '';
+  // 2. AI에게 보낼 요청 데이터
+  const body = {
+    model: 'gpt-4o-mini',
+    temperature: 0.7,
+    messages: [
+      { role: 'system', content: '너는 감정 일기를 도와주는 따뜻한 한국어 상담가야.' },
+      {
+        role: 'user',
+        content: `
+다음 정보를 바탕으로 오늘 하루를 3~6문장으로 요약하고, 마지막에 한 줄 조언을 덧붙여줘.
+- 오늘의 감정: ${moodName}
+- 오늘의 칭찬: ${praise || '없음'}
+- 오늘의 반성: ${reflection || '없음'}
+- 오늘의 일기: ${diary}`
+      }
+    ]
+  };
 
+  try {
+    // 3. Cloudflare 워커로 요청 전송
+    const res = await fetch(proxy + '/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        
+        // [!] 'x-proxy-key' 라인을 완전히 삭제했습니다.
+      },
+      body: JSON.stringify(body)
+    });
+
+    const raw = await res.text();
+    if (!res.ok) {
+      throw new Error(`[프록시] HTTP ${res.status} - ${raw.slice(0, 200)}`);
+    }
+
+    const data = JSON.parse(raw);
+    return data.choices?.[0]?.message?.content?.trim() || '(빈 응답)';
+  } catch (err) {
+    throw new Error(`요약 실패: ${err.message}`);
+  }
 }
-// ================== [!] 수정/추가 끝 ==================
+// ================== [!] 수정 끝 ==================
 
 
 // ================== 전역 이벤트 ==================
