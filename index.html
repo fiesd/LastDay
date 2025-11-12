@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#a684ff" />
+  
+  <title>DailyMyDay</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hdr">
+      <button id="menuBtn" class="menu-btn" type="button">☰</button>
+      <div class="brand" id="homeBtn">DailyMyDay</div>
+      <div class="today-pill" id="todayPill"></div>
+    </header>
+
+    
+
+    <!-- 사이드 메뉴 -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">메뉴</div>
+      <ul>
+        <li data-tab="Calendar">📅 캘린더</li>
+        <li data-tab="Mood">😊 감정·칭찬</li>
+        <li data-tab="Diary">📖 일기</li>
+        <li data-tab="Records">🗂 기록</li>
+        <li data-tab="Stats">📈 통계</li>
+        <li data-tab="Settings">⚙️ 설정</li>
+      </ul>
+    </nav>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 뷰 -->
+    <section id="viewCalendar" class="view active">
+      <section class="card">
+        <div class="monthbar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <div class="nav" style="display:flex;gap:8px">
+            <button class="btn" id="prevMonth">◀︎ 이전달</button>
+            <button class="btn" id="nextMonth">다음달 ▶︎</button>
+          </div>
+          <div><strong id="monthLabel"></strong></div>
+        </div>
+        <div class="calendar" id="calendarHead">
+          <div class="dow">일</div><div class="dow">월</div><div class="dow">화</div><div class="dow">수</div>
+          <div class="dow">목</div><div class="dow">금</div><div class="dow">토</div>
+        </div>
+        <div class="calendar" id="calendarGrid" style="margin-top:6px"></div>
+      </section>
+    </section>
+
+    <section id="viewMood" class="view">
+      <section class="card">
+        <h2>지금 감정</h2>
+        <div class="moods" id="moodGrid"></div>
+      </section>
+      <section class="card">
+        <h2>오늘의 칭찬</h2>
+        <textarea id="praise" placeholder="~칭찬합니다." maxlength="80"></textarea>
+        <h2 style="margin-top: 16px;">오늘의 반성</h2>
+        <textarea id="reflection" placeholder="~반성합니다." maxlength="120"></textarea>
+        <div class="row" style="margin-top: 10px;"><button class="btn primary grow" id="nextToDiary">일기 쓰기</button></div>
+      </section>
+    </section>
+
+    <!-- 일기 작성 섹션 -->
+    <section id="viewDiary" class="view">
+      <section class="card">
+        <h2 id="editorTitle">오늘(—) 일기</h2>
+        <textarea id="diary" placeholder="오늘 하루를 기록해 보세요."></textarea>
+        <div class="counter"><span id="charCount">0</span>자</div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn primary grow" id="saveBtn">저장</button>
+          <button class="btn grow" id="summBtn">요약&조언</button>
+          <button class="btn grow" id="delBtn" style="color:var(--danger);border-color:#ffd4d4;background:#fff5f5">삭제</button>
+        </div>
+
+        <div class="entry" id="summaryBox" style="display:none;margin-top:10px">
+          <div class="meta"><span class="chip">AI 요약</span><span id="summaryTime" class="muted"></span></div>
+          <div id="summaryText" style="margin-top:6px;white-space:pre-wrap"></div>
+        </div>
+      </section>
+    </section>
+
+   <!-- 기록 탭 -->
+    <section id="viewRecords" class="view">
+      <section class="card">
+        <h2>기록</h2>
+        <div id="entries"></div>
+      </section>
+    </section>
+
+    <!-- 통계 탭 -->
+    <section id="viewStats" class="view">
+      <section class="card">
+        <h2>통계</h2>
+        <div class="stats" id="statsBox" style="margin-bottom:10px"></div>
+        <div class="chart" id="moodChart" style="margin-top:12px"></div>
+      </section>
+    </section>
+
+    <!--  설정 탭 -->
+    <section id="viewSettings" class="view">
+      <section class="card">
+        <h2>⚙️ 설정</h2>
+        <div class="settings-list">
+          <div class="setting-item">
+            <div class="label">PIN 잠금 설정</div>
+            <button class="btn small" id="setPinBtn">설정</button>
+          </div>
+          <div class="setting-item">
+            <div class="label">전체 삭제</div>
+            <button class="btn small danger" id="resetBtn">초기화</button>
+          </div>
+            <div class="setting-item">
+            <div class="label">테마 변경</div>
+            <button class="btn small" id="themeBtn">다크모드</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <!-- PIN 잠금 -->
+  <div class="lockscreen" id="lockScreen" style="display:none">
+    <div class="lock-box">
+      <h2>🔒 PIN 잠금</h2>
+      <p>4자리 PIN 번호를 입력하세요.</p>
+      <input id="pinInput" type="password" maxlength="4" inputmode="numeric" />
+      <button class="btn primary" id="unlockBtn">잠금 해제</button>
+      <div id="lockMsg" class="muted" style="margin-top:6px"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

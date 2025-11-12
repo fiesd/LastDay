@@ -1,0 +1,424 @@
+:root{
+  --bg:#f8f6f4; --paper:#ffffff; --ink:#2e2a27; --sub:#6f6a67;
+  --primary:#a684ff; --primary-weak:#ece5ff; --danger:#ef4444;
+  --radius:16px; --shadow:0 10px 28px rgba(0,0,0,.08);
+  --gap: clamp(10px, 2.5vw, 14px);
+  --dock-h:64px;
+  --fs-base:clamp(14px, 3.6vw, 16px);
+  --fs-sm:clamp(12px, 3.2vw, 14px);
+  --fs-lg:clamp(18px, 4.6vw, 22px);
+  --tap:44px;
+}
+*{box-sizing:border-box}
+
+html,body{
+
+  margin:0; padding:0; background:var(--bg); color:var(--ink);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Apple SD Gothic Neo,Noto Sans KR,sans-serif;
+  font-size:var(--fs-base);
+}
+
+.app{
+  max-width: 1200px; 
+  margin:0 auto;
+
+  padding: clamp(10px, 2.6vw, 16px) clamp(10px, 2.6vw, 16px);
+
+}
+.hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:6px 0 clamp(8px,2vw,14px);gap:8px;
+}
+.brand{font-weight:800;font-size:clamp(20px,5.2vw,26px);letter-spacing:.3px}
+.today-pill{background:var(--primary-weak);color:#5a45b8;border-radius:999px;padding:6px 10px;font-size:var(--fs-sm)}
+
+.card{
+  background:var(--paper);border-radius:var(--radius);box-shadow:var(--shadow);
+  padding: clamp(14px, 4vw, 18px);
+  margin: var(--gap) 0;
+}
+
+.card h2{margin:0 0 8px;font-size:var(--fs-lg)}
+.muted{color:var(--sub);font-size:var(--fs-sm)}
+.row{display:flex;gap:var(--gap);flex-wrap:wrap}
+
+.btn{
+  padding:12px 14px; border-radius:12px; border:1px solid #e7e3ff; background:#fff; cursor:pointer;
+  min-height:var(--tap); line-height:1; font-size:var(--fs-base);
+  touch-action: manipulation;
+}
+.btn.primary{background:var(--primary);color:#fff;border-color:transparent}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.small{padding:8px 10px;font-size:var(--fs-sm);border-radius:8px}
+.btn.small.danger{color:var(--danger);border-color:#ffd4d4;background:#fff5f5}
+.grow{flex:1}
+
+/* 1. 캘린더 */
+.calendar{
+  display:grid;grid-template-columns:repeat(7,1fr);
+  gap: clamp(6px, 2vw, 8px);
+}
+#calendarGrid {
+}
+.dow{font-size:var(--fs-sm);color:var(--sub);text-align:center}
+.day{
+  border-radius:12px; background:#fff; display:flex; align-items:center; justify-content:center;
+  border:1px solid #eee; font-weight:600; cursor:pointer; position:relative;
+  min-height: clamp(48px, 15vw, 70px);
+  font-size: clamp(14px, 4vw, 16px);
+  touch-action: manipulation;
+}
+.day.today{outline:2px solid var(--primary)}
+.day.selected{background:var(--primary-weak);border-color:#cfc3ff}
+.day.disabled{opacity:.35;pointer-events:none}
+
+/* 2. 감정 선택 */
+.moods{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(8px, 2.5vw, 10px);
+}
+.mood{
+  border:1px solid #eee;border-radius:12px;background:#fff;text-align:center;cursor:pointer;user-select:none;
+  min-height: clamp(60px, 18vw, 80px);
+  padding: 10px;
+  display: flex; /* 이모지와 텍스트 정렬용 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.mood .em{
+  /*이모지 크기*/
+  font-size: clamp(24px, 7vw, 28px);
+  display:block;
+}
+.mood.active{border-color:#cfc3ff;background:var(--primary-weak)}
+.mood:active{transform:scale(.98)}
+
+/* 3. 일기 입력 */
+textarea, input[type="text"]{
+  width:100%; border:1px solid #e9e4ff; border-radius:12px; padding:12px; background:#fff; font-size:var(--fs-base);
+  min-height:var(--tap);
+}
+#praise{
+  height: clamp(80px, 20vw, 100px);
+  line-height: 1.6;
+  resize:vertical;
+}
+#reflection{
+  height: clamp(80px, 20vw, 100px);
+  line-height: 1.6;
+  resize:vertical;
+}
+#diary{
+  height: clamp(280px, 50vh, 400px);
+  line-height: 1.6;
+  resize:vertical;
+}
+
+.counter{font-size:var(--fs-sm);color:var(--sub);text-align:right;margin-top:6px}
+
+/* 기록/통계 */
+.entry{border:1px dashed #eee;border-radius:12px;padding:10px;margin-top:8px;background:#fff}
+.entry .meta{display:flex;gap:8px;align-items:center;font-size:var(--fs-sm);color:var(--sub)}
+.chip{background:#f2f1ff;color:#5a45b8;border-radius:999px;padding:2px 8px;font-weight:600}
+.actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+
+#statsBox {
+}
+
+.stat{background:#fff;border-radius:12px;border:1px solid #eee;padding:10px;text-align:center}
+.stat .k{font-size:var(--fs-sm);color:var(--sub)}
+.stat .v{font-size:clamp(16px,4.2vw,18px);font-weight:800}
+
+.view{display:none}
+.view.active{
+  display: block;
+}
+
+/*사이드 메뉴 */
+.menu-btn{
+  background:none;border:none;font-size:26px;cursor:pointer;color:var(--ink);
+}
+.sidebar{
+  position:fixed; top:0; left:-260px; width:240px; height:100%;
+  background:var(--paper); box-shadow:var(--shadow);
+  transition:left .3s ease; z-index:2000; padding-top:70px;
+}
+.sidebar.open{left:0}
+.sidebar-header{font-weight:700;font-size:var(--fs-lg);padding:16px;border-bottom:1px solid #eee}
+.sidebar ul{margin:0;padding:0}
+.sidebar li{
+  padding:14px 18px;border-bottom:1px solid #f2f2f2;cursor:pointer;font-size:var(--fs-base);
+  transition:background .2s;
+}
+.sidebar li:hover{background:var(--primary-weak);color:#5a45b8}
+.overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.3);
+  opacity:0; pointer-events:none; transition:opacity .3s; z-index:1500;
+}
+.overlay.show{opacity:1; pointer-events:all}
+
+/*설정 화면*/
+.settings-list{display:flex;flex-direction:column;gap:14px}
+.setting-item{
+  display:flex;align-items:center;justify-content:space-between;
+  border:1px solid #eee;border-radius:var(--radius);padding:10px 14px;background:#fff;
+}
+.setting-item .label{font-size:var(--fs-base);font-weight:500}
+
+/* PIN 잠금 화면  */
+.lockscreen{
+  position:fixed; inset:0; background:var(--bg);
+  display:flex; align-items:center; justify-content:center; z-index:3000;
+}
+.lock-box{
+  background:var(--paper); box-shadow:var(--shadow); border-radius:var(--radius);
+  padding:24px 22px; width:85%; max-width:320px; text-align:center;
+}
+.lock-box h2{margin-bottom:8px;font-size:var(--fs-lg)}
+.lock-box input{
+  width:100%; text-align:center; letter-spacing:6px; font-size:22px; padding:10px;
+  border-radius:10px; border:1px solid #ddd; margin:8px 0;
+}
+
+
+/* 4. 통계 탭 레이아웃 */
+#statsMode {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+  flex-wrap: wrap; 
+}
+#statsMode .btn.small {
+  border-color: #ddd;
+  background: #fff;
+  transition: all 0.2s;
+}
+#statsMode .btn.small:hover {
+  background: var(--primary-weak);
+  color: var(--primary);
+}
+.chart {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+#statsContent {
+}
+
+/* 통계 그래프 */
+.chart div {
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+}
+.chart div:hover {
+  transform: scale(1.02);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+/* ====== 주간 감정 그래프 ====== */
+.week-emotions {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  text-align: center;
+}
+.week-emotions div {
+  flex: 1;
+  text-align: center;
+}
+html.dark .week-emotions {
+  background: #2a292d;
+}
+
+/* ====== 막대 그래프 ====== */
+.bar-graph {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  gap: 6px;
+  padding: 12px;
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: 12px;
+
+  /* ✅ 모바일 대응: 높이 고정 대신 동적 뷰포트 사용 */
+  min-height: 220px;
+  height: 40dvh;
+  max-height: 320px;
+}
+.bar-item {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.bar {
+  width: clamp(12px, 3vw, 18px);
+  border-radius: 6px 6px 0 0;
+  transition: height .4s ease;
+}
+.bar-label {
+  margin-top: 6px;
+  font-size: var(--fs-sm);
+  color: var(--ink);
+  line-height: 1.2;
+}
+html.dark .bar-graph {
+  background: #2a292d;
+}
+
+/* ====== 데스크탑 전용 (모바일보다 높게 표시) ====== */
+@media (min-width: 768px) {
+  .bar-graph {
+    height: 260px;
+  }
+}
+
+.week-emotions {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+}
+.week-emotions div {
+  text-align: center;
+}
+html.dark .week-emotions {
+  background: #2a292d;
+}
+
+/* 다크 모드 */
+html.dark {
+  --bg: #1f1e22;
+  --paper: #2a292d;
+  --ink: #f0f0f1;
+  --sub: #9e9a97;
+  --primary-weak: #3a325c;
+  --shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+html.dark .btn {
+  border: 1px solid #4a4a4e;
+  background: #3a393e;
+  color: var(--ink);
+}
+html.dark .btn.primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: transparent;
+}
+html.dark .btn.small.danger {
+  color: #ffbaba;
+  border-color: #5c3b3b;
+  background: #4a2f2f;
+}
+html.dark .day {
+  background: var(--paper);
+  border: 1px solid #4a4a4e;
+}
+html.dark .day.selected {
+  background: var(--primary-weak);
+  border-color: #5a45b8;
+}
+html.dark .mood {
+  border: 1px solid #4a4a4e;
+  background: var(--paper);
+}
+html.dark .mood.active {
+  border-color: #5a45b8;
+  background: var(--primary-weak);
+}
+html.dark textarea, 
+html.dark input[type="text"] {
+  border: 1px solid #5a45b8;
+  background: var(--paper);
+  color: var(--ink);
+}
+html.dark .entry {
+  border: 1px dashed #4a4a4e;
+  background: var(--paper);
+}
+html.dark .stat {
+  background: var(--paper);
+  border: 1px solid #4a4a4e;
+}
+html.dark .sidebar {
+  background: var(--paper);
+}
+html.dark .sidebar li {
+  border-bottom: 1px solid #4a4a4e;
+}
+html.dark .sidebar li:hover {
+  background: var(--primary-weak);
+  color: var(--primary);
+}
+html.dark .overlay {
+  background: rgba(0,0,0,.5);
+}
+html.dark .setting-item {
+  border: 1px solid #4a4a4e;
+  background: var(--paper);
+}
+html.dark .lock-box {
+  background: var(--paper);
+}
+html.dark .lock-box input {
+  background: #3a393e;
+  border: 1px solid #5a45b8;
+  color: var(--ink);
+}
+html.dark #statsMode .btn.small {
+  border-color: #4a4a4e;
+  background: var(--paper);
+  color: var(--ink);
+}
+html.dark #statsMode .btn.small:hover {
+  background: var(--primary-weak);
+  color: var(--primary);
+}
+
+
+/* ===== 데스크탑용 미디어 쿼리 ===== */
+/* 화면 너비가 768px 이상일 때 (태블릿/데스크탑) */
+@media (min-width: 768px) {
+
+  /* [요청 2] 감정 탭: 6열로 복귀 */
+  .moods {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  /* 캘린더 날짜(day)의 높이를 고정합니다. (데스크탑 스크롤 방지) */
+  .day {
+    min-height: 90px;
+    font-size: 16px;
+  }
+
+  /* 일기 쓰기(textarea) 영역의 최소 높이를 조절합니다. */
+  #diary {
+    height: 40vh;
+    min-height: 350px;
+  }
+  #praise {
+    height: 100px;
+  }
+  #reflection {
+    height: 100px;
+  }
+
+  .bar-graph {
+    height: 250px;
+  }
+}
