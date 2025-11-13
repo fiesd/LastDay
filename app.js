@@ -201,7 +201,7 @@ function renderEntries(){
 
     const mood=MOODS.find(m=>m.id===it.mood);
     const firstDailyLine=it.text.split('\n')[0].slice(0,35);
-    const firstSummeryLine=it.summary?.text?it.summary.text.split('\n')[0].slice(0,35):'';
+    const firstSummeryLine=it.summary?.text?it.summary.text.split('\n')[0].slice(0,35):'요약 없음';
     const div=document.createElement('div');
 
     div.className='entry';
