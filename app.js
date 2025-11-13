@@ -5,7 +5,7 @@ const fmt = (d)=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-$
 const today = new Date();
 let view = new Date(today.getFullYear(), today.getMonth(), 1);
 let selectedDate = new Date(today);
-
+//json 저장 
 const STORAGE_KEY = 'dailymyday.v1';
 const loadAll = ()=> JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');
 const saveAll = (obj)=> localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
@@ -416,7 +416,7 @@ async function summarize() {
       {
         role: 'user',
         content: `
-다음 정보를 바탕으로 오늘 하루를 3~6문장으로 요약하고, 마지막에 조언을 덧붙여줘.
+다음 정보를 바탕으로 오늘 하루를 요약하고, 마지막에 조언을 덧붙여줘.
 - 오늘의 감정: ${moodName}
 - 오늘의 칭찬: ${praise || '없음'}
 - 오늘의 반성: ${reflection || '없음'}
