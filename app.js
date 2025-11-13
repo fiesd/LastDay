@@ -476,7 +476,7 @@ document.body.addEventListener('click', async e=>{
     t.disabled=true;
 
     try{
-      const sum=await summarize(); // [!] 이제 이 함수가 존재합니다.
+      const sum=await summarize(); 
       text.textContent=sum;
       time.textContent=`(${new Date().toLocaleString()})`;
 
@@ -491,7 +491,7 @@ document.body.addEventListener('click', async e=>{
       };
       saveAll(all);
     }catch(e){
-      text.textContent='요약 실패: '+e.message; // 에러를 화면에 남김
+      text.textContent='요약 실패: '+e.message; 
     }finally{
       t.disabled=false;
     }
@@ -514,10 +514,12 @@ if (overlay) {
   });
 }
 $$('#sidebar li').forEach(li=>li.addEventListener('click',()=>showTab(li.dataset.tab)));
-
+//초기화
 $('#resetBtn')?.addEventListener('click',()=>{
   if(confirm('모든 데이터를 삭제할까요?')){
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('myday.pin');
+    localStorage.removeItem('myday.theme');
     alert('초기화 완료');
     renderCalendar();   // 점 즉시 제거
     renderEntries();
