@@ -197,17 +197,21 @@ function renderEntries(){
 
   keys.forEach(k=>{
     const it=all[k];
-    if(!it.summary||!it.summary.text) return;
+    if(!it.text) return;
 
     const mood=MOODS.find(m=>m.id===it.mood);
+    const firstDailyLine=it.text.split('\n')[0].slice(0,35);
+    const firstSummeryLine=it.summary?.text?it.summary.text.split('\n')[0].slice(0,35):'';
     const div=document.createElement('div');
+
     div.className='entry';
     div.innerHTML=`
       <div class="meta">
         <span class="chip">${k}</span>
         ${mood?`<span class="chip">${mood.em} ${mood.name}</span>`:''}
       </div>
-      <div style="margin-top:6px; white-space:pre-line;">${it.summary.text}</div>
+      <div style="margin-top:6px; white-space:normal;"><strong>✏️일기:</strong>${firstDailyLine}${it.text.length>35?'...':''}<br>
+      <strong>🤖요약</strong>${firstSummeryLine}${firstSummeryLine.length>35?'...':''}</div>
       <div style="margin-top:8px;display:flex;gap:6px;">
         <button class="btn small" data-edit="${k}">수정</button>
         <button class="btn small danger" data-del="${k}">삭제</button>
@@ -387,12 +391,11 @@ function renderWeeklyStats(all,box){
 
   box.appendChild(wrap);
 }
-
-// ================== [!] 수정된 부분 ==================
+/////////////////////////////////////////////////////학교 와이파이로는 작동 x 왜????
 // AI 요약 함수 (summarize)
-// =========================================================
+
 async function summarize() {
-  // 1. index.html에 설정한 프록시 주소를 가져옵니다.
+  //  index.html에 설정한 프록시 주소를 가져옵니다.
   const proxy = document.querySelector('meta[name="proxy-url"]')?.content || '';
   if (!proxy) throw new Error('프록시 URL이 설정되지 않았습니다. (index.html 확인)');
 
@@ -404,7 +407,7 @@ async function summarize() {
 
   if (!diary) throw new Error('일기 내용을 먼저 입력해 주세요.');
 
-  // 2. AI에게 보낼 요청 데이터
+  // AI에게 보낼 요청 데이터
   const body = {
     model: 'gpt-4o-mini',
     temperature: 0.7,
@@ -423,13 +426,11 @@ async function summarize() {
   };
 
   try {
-    // 3. Cloudflare 워커로 요청 전송
+    //  Cloudflare 워커로 요청 전송
     const res = await fetch(proxy + '/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        
-        // [!] 'x-proxy-key' 라인을 완전히 삭제했습니다.
       },
       body: JSON.stringify(body)
     });
@@ -445,10 +446,10 @@ async function summarize() {
     throw new Error(`요약 실패: ${err.message}`);
   }
 }
-// ================== [!] 수정 끝 ==================
+/////////////////////////////////////////////////////////////////////
 
 
-// ================== 전역 이벤트 ==================
+//  이벤트 처리
 document.body.addEventListener('click', async e=>{
   const t=e.target;
 
