@@ -39,7 +39,7 @@ function showTab(name){
   sidebar?.classList.remove('open');
   overlay?.classList.remove('show');
   if(name==='Diary') updateEditorHeader();
-  if(name==='Records') renderEntries();
+  if(name==='Records') renderEntries($('#entrySearchInput')?.value); // 💡 검색어 전달
   if(name==='Stats') renderStats();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -184,11 +184,36 @@ function deleteCurrent(){
 }
 
 // 기록
-function renderEntries(){
+function renderEntries(searchTerm = ''){ // 💡 searchTerm 인자 추가
   const box=$('#entries');
   const all=loadAll();
-  const keys=Object.keys(all).sort().reverse();
+  let keys=Object.keys(all).sort().reverse();
+  const lowerSearchTerm = searchTerm.toLowerCase().trim();
 
+  // 검색어 필터링
+  if(lowerSearchTerm){
+    keys = keys.filter(k => {
+      const it = all[k];
+      if (!it.text) return false;
+
+      // 일기 내용, 칭찬, 반성, 요약 검색
+      const content = [
+        it.text, 
+        it.praise, 
+        it.reflection, 
+        it.summary?.text
+      ].filter(Boolean).join(' ').toLowerCase();
+
+      if (content.includes(lowerSearchTerm)) return true;
+
+      // 감정 이름 검색
+      const moodName = MOOD_NAME[it.mood] || '';
+      if (moodName.toLowerCase().includes(lowerSearchTerm)) return true;
+      
+      return false;
+    });
+  }
+  
   box.innerHTML='';
   if(!keys.length){
     box.innerHTML='<div class="muted">기록이 없습니다.</div>';
@@ -656,5 +681,13 @@ function init(){
   loadEntryToEditor();
   initTheme();
   checkPinLock();
+  
+  // 💡 기록 검색 이벤트 리스너 추가
+  const searchInput = $('#entrySearchInput');
+  if(searchInput){
+    searchInput.addEventListener('input', ()=>{
+      renderEntries(searchInput.value);
+    });
+  }
 }
 window.addEventListener('DOMContentLoaded', init);

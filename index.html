@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#a684ff" />
   
-  <!-- ✅ CSP 정책 추가 (Worker 도메인 허용) -->
- 
-  
   <title>DailyMyDay</title>
   <meta name="proxy-url" content="https://ai-diary-proxy.wldjs6509.workers.dev">
 
@@ -21,7 +18,6 @@
       <div class="today-pill" id="todayPill"></div>
     </header>
 
-    <!-- 사이드 메뉴 -->
     <nav class="sidebar" id="sidebar">
       <div class="sidebar-header">메뉴</div>
       <ul>
@@ -36,7 +32,6 @@
     </nav>
     <div class="overlay" id="overlay"></div>
 
-    <!-- 뷰 -->
     <section id="viewCalendar" class="view active">
       <section class="card">
         <div class="monthbar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
@@ -68,7 +63,6 @@
       </section>
     </section>
 
-    <!-- 일기 작성 섹션 -->
     <section id="viewDiary" class="view">
       <section class="card">
         <h2 id="editorTitle">오늘(—) 일기</h2>
@@ -87,15 +81,14 @@
       </section>
     </section>
 
-   <!-- 기록 탭 -->
-    <section id="viewRecords" class="view">
+   <section id="viewRecords" class="view">
       <section class="card">
         <h2>기록</h2>
+        <input type="text" id="entrySearchInput" placeholder="일기 내용 또는 감정 이름으로 검색" style="margin-bottom: 10px;"/>
         <div id="entries"></div>
       </section>
     </section>
 
-    <!-- 통계 탭 -->
     <section id="viewStats" class="view">
       <section class="card">
         <h2>통계</h2>
@@ -104,7 +97,6 @@
       </section>
     </section>
 
-    <!--  설정 탭 -->
     <section id="viewSettings" class="view">
       <section class="card">
         <h2>⚙️ 설정</h2>
@@ -134,7 +126,6 @@
     </section>
   </div>
 
-  <!-- PIN 잠금 -->
   <div class="lockscreen" id="lockScreen" style="display:none">
     <div class="lock-box">
       <h2>🔒 PIN 잠금</h2>
